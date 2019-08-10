@@ -9,8 +9,8 @@ const initialState = {
     user_name: "David",
     banker_name: "Geoffrey"
   },
-  entity_id: 1026,
-  template_id: 1081,
+  entity_id: 1033,
+  template_id: 1101,
   mainTitle: "Dashboard",
   //URL: "http://172.16.1.62:3000"
   //URL: "http://192.168.7.169:3000"

@@ -128,7 +128,7 @@ INSERT INTO entity_x_section_x_field (entity_id, section_id, field_id)
 
 --sections in an entity
 SELECT id, name, label, purpose 
-	FROM section
+	FROM section 
 	WHERE entity_id = (select id from entity where name = 'Enterprise Bank')
 	ORDER BY name;
 

@@ -138,11 +138,24 @@ function HPTable(props) {
                       );
                     } else if (row[column][F_IMP] === "SELECT") {
                       return (
-                        <Select value={row[column][DATA]} onChange={props.handleSelect} onBlur={props.handleFieldOnBlur} displayEmpty name="action">
-                          {row[column][CONFIG_D].map(selectOption => {
-                            return <MenuItem value={selectOption.value}>{selectOption.label}</MenuItem>;
-                          })}
-                        </Select>
+                        <TableCell>
+                          <Select
+                            key={idxJ}
+                            value={row[column][DATA]}
+                            onChange={props.handleSelect}
+                            onBlur={props.handleFieldOnBlur}
+                            displayEmpty
+                            name="action"
+                          >
+                            {row[column][CONFIG_D].map((selectOption, idx) => {
+                              return (
+                                <MenuItem key={idx} value={selectOption.value}>
+                                  {selectOption.label}
+                                </MenuItem>
+                              );
+                            })}
+                          </Select>
+                        </TableCell>
                       );
                     }
                   } else {

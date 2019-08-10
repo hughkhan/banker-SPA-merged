@@ -142,7 +142,7 @@ class Form extends Component {
         };
         let dbops = new dbOps();
         await dbops.addFieldData(data);
-        this.setState({ fieldDirty: false });
+        this.setState({ fieldDirty: false, fieldInstanceID: 0 });
       } catch (err) {
         alert(err.message);
       }
@@ -179,11 +179,14 @@ class Form extends Component {
         } else {
           _section_id = this.getNextChildSection(_section_id).section_id;
         }
-      } while (result_json.length === 0 && _section_id !== null); //traverse down the section tree looking for the first child that has fields
+      } while (result_json.length === 0 && _section_id !== null); //traverse down the section tree looking for the first child section that has fields
 
       if (_section_id === null) throw new hpError("db", "None of the sub-sections of this section has any data input field");
 
-      this.setState({ currentSectionLabel: this.getSectionAttrib(_section_id, "section_label") });
+      this.setState({
+        currentSectionLabel: this.getSectionAttrib(_section_id, "section_label"),
+        isTabular: this.getSectionAttrib(_section_id, "section_type") === "TABULAR"
+      });
       this.setBreadcrumbs(_section_id);
 
       for (i = 0; i < result_json.length; i++) {
@@ -209,7 +212,8 @@ class Form extends Component {
       this.setState({
         selectedFieldLabel: fieldData_temp[0].label,
         selectedFieldGuideText: fieldData_temp[0].sys_guide + "\n" + fieldData_temp[0].guide_addition,
-        fieldInstanceID: fieldData_temp[0].field_instance_id,
+//        fieldInstanceID: fieldData_temp[0].field_instance_id,
+        fieldInstanceID: 0,
         selectedFieldIdx: 0 /* ,
         currColumn: 0,
         currRow: 0 */
@@ -262,8 +266,8 @@ class Form extends Component {
 
     for (j = i - 1; j >= 0; j--) {
       if (this.state.formsList[j].level < level) {
-        if (this.state.formsList[j].label.length > 10) {
-          _breadcrumbs = this.state.formsList[j].label.slice(0, 10) + "... > " + _breadcrumbs;
+        if (this.state.formsList[j].label.length > 20) {
+          _breadcrumbs = this.state.formsList[j].label.slice(0, 20) + "... > " + _breadcrumbs;
         } else {
           _breadcrumbs = this.state.formsList[j].label + " > " + _breadcrumbs;
         }
@@ -272,25 +276,6 @@ class Form extends Component {
     }
     this.setState({ breadCrumbs: _breadcrumbs });
   }
-
-  /*   loadChildSubSections1(section_id) {
-    let i = 0,
-      level = 0,
-      childSections = [];
-
-    for (i = 0; i < this.state.formsList.length; i++) {
-      if (this.state.formsList[i].section_id === section_id) {
-        level = this.state.formsList[i].level;
-        i++;
-        level++;
-        while (this.state.formsList[i].level === level && i < this.state.formsList.length) {
-          childSections.push(this.state.formsList[i]);
-          i++;
-        }
-        return childSections;
-      }
-    }
-  } */
 
   async componentDidMount() {
     let result = null;
@@ -389,7 +374,6 @@ class Form extends Component {
                 ) : (
                   <Fields
                     fieldData={this.state.fieldData}
-                    isTabular={this.state.isTabular}
                     handleFieldOnFocus={this.handleFieldOnFocus}
                     fieldInstanceID={this.state.fieldInstanceID}
                     handleFieldChange={this.handleFieldChange}
