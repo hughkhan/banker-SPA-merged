@@ -4,4 +4,5 @@
 
 export const SET_CURRENT_STATE = "SET_CURRENT_STATE";
 export const SET_MAIN_TITLE = "SET_MAIN_TITLE";
+export const SET_USER_INFO = "SET_USER_INFO";
 

@@ -34,15 +34,19 @@ class Chat extends Component {
     let tempCommTextArr = this.state.localCommTextArr;
 
     tempCommTextArr.push({
-      name: this.props.userInfo1.user_name,
+      name: this.props.userInfo.user_name,
       text: this.state.commText
     });
 
+    if (this.props.fieldInstanceID === 0){
+      alert("Please select a field first");
+      return;
+    }
     let data = {
       entity_id: this.props.entity_id,
-      user_id: this.props.userInfo1.user_id,
+      user_id: this.props.userInfo.user_id,
       field_instance_id: this.props.fieldInstanceID,
-      name: this.props.userInfo1.user_name,
+      name: this.props.userInfo.user_name,
       text: this.state.commText
     };
 
@@ -62,7 +66,7 @@ class Chat extends Component {
       result_json = null;
     let data = {
       entity_id: this.props.entity_id,
-      user_id: this.props.userInfo1.user_id,
+      user_id: this.props.userInfo.user_id,
       field_instance_id: this.props.fieldInstanceID
     };
 
@@ -120,7 +124,7 @@ class Chat extends Component {
         <Box p={1}>
           <TextField
             id="standard-textarea"
-            label={"Ask " + this.props.userInfo1.user_name}
+            label={"Ask " + this.props.userInfo.banker_name}
             placeholder="Communication"
             multiline
             margin="normal"
@@ -142,7 +146,7 @@ const mapStateToProps = state => {
   return {
     entity_id: state.entity_id,
     url: state.URL,
-    userInfo1: state.userInfo1
+    userInfo: state.userInfo
   };
 };
 export default withRouter(connect(mapStateToProps)(withStyles(styles)(Chat)));

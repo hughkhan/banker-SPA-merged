@@ -141,7 +141,7 @@ const mapStateToProps = state => {
   return {
     entity_id: state.entity_id,
     url: state.URL,
-    userInfo1: state.userInfo1,
+    userInfo: state.userInfo,
     mainTitle: state.mainTitle
   };
 };

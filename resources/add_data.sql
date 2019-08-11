@@ -37,7 +37,8 @@ INSERT INTO entity (name) VALUES ('Enterprise Bank');
 INSERT INTO entity (name) VALUES ('Bank of the Prairie');
 INSERT INTO entity (name) VALUES ('NBKC');
 
-INSERT INTO users (entity_id, name_first, name_last, name_middle, email, pwd, hash, active, role) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), 'Jane', 'Sue', 'Doe', 'jsd@gmail.com', 'xxx','xxx',true, 'CUSTOMER'); 
+INSERT INTO users (entity_id, name_first, name_last, name_middle, email, pwd, hash, active, role) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), 'Joe', 'The', 'Plumber', 'jtp@gmail.com', 'xxx','xxx',true, 'CUSTOMER'); 
+INSERT INTO users (entity_id, name_first, name_last, name_middle, email, pwd, hash, active, role) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), 'Jane', 'Lotso', 'Dough', 'jld@gmail.com', 'xxx','xxx',true, 'BANKER'); 
 
 INSERT INTO guide (data) VALUES ('Your full legal name; as it appears on government issued identification​');
 INSERT INTO guide (data) VALUES ('Your primary residence');

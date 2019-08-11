@@ -11,6 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import cloneDeep from "lodash.clonedeep";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
+import Icon from "@material-ui/core/Icon";
 
 //const styles = theme => ({});
 
@@ -20,7 +21,7 @@ const F_IMP = 2;
 const CONFIG_D = 3;
 
 function loadColumns(fieldData) {
-  let columns = [];
+  let columns = ["Status"];
 
   if (fieldData.length === 0) return [];
 
@@ -33,7 +34,7 @@ function loadColumns(fieldData) {
 
 function loadRows(fieldData) {
   let row = {};
-  let rows = [];
+  let rows = [{ Status: "OK" }];
   let newRow = {};
 
   if (fieldData.length === 0) return [];
@@ -118,60 +119,67 @@ function HPTable(props) {
             return (
               <TableRow key={idxI}>
                 {dataColumns.map((column, idxJ) => {
-                  fieldIdx++;
-                  // if (idxI === props.currRow && idxJ === props.currColumn) {
-                  if (row[column][F_INST_ID] === props.fieldInstanceID) {
-                    if (row[column][F_IMP] === "TEXTBOX") {
-                      return (
-                        // <TableCell id={idxI + "-" + idxJ} key={idxJ} data-fieldidx={fieldIdx} onClick={props.handleCellClick}>
-                        <TableCell id={row[column][F_INST_ID]} key={idxJ} data-fieldidx={fieldIdx} onClick={props.handleCellClick}>
-                          <Input
-                            className={classes.textFieldSelected}
-                            disableUnderline
-                            value={row[column][DATA]}
-                            style={{ width: "150px" }}
-                            onChange={props.handleFieldChange}
-                            onBlur={props.handleFieldOnBlur}
-                            id={fieldIdx.toString() + "_hp_field"}
-                          />
-                        </TableCell>
-                      );
-                    } else if (row[column][F_IMP] === "SELECT") {
-                      return (
-                        <TableCell>
-                          <Select
-                            key={idxJ}
-                            value={row[column][DATA]}
-                            onChange={props.handleSelect}
-                            onBlur={props.handleFieldOnBlur}
-                            displayEmpty
-                            name="action"
-                          >
-                            {row[column][CONFIG_D].map((selectOption, idx) => {
-                              return (
-                                <MenuItem key={idx} value={selectOption.value}>
-                                  {selectOption.label}
-                                </MenuItem>
-                              );
-                            })}
-                          </Select>
-                        </TableCell>
-                      );
-                    }
+                  if (idxJ === 0) {
+                    return (
+                      <TableCell>
+                        <Icon style={{ fontSize: "30px", color: "red" }}>trip_origin</Icon>
+                      </TableCell>
+                    );
                   } else {
-                    if (row[column][F_IMP] === "SELECT") {
-                      return (
-                        // <TableCell id={idxI + "-" + idxJ} key={idxJ} data-fieldidx={fieldIdx} onClick={props.handleCellClick}>
-                        <TableCell id={row[column][F_INST_ID]} key={idxJ} data-fieldidx={fieldIdx} onClick={props.handleCellClick}>
-                          {getLabel(row[column][CONFIG_D], parseInt(row[column][DATA]))}
-                        </TableCell>
-                      );
-                    } else if (row[column][F_IMP] === "TEXTBOX") {
-                      return (
-                        <TableCell id={row[column][F_INST_ID]} key={idxJ} data-fieldidx={fieldIdx} onClick={props.handleCellClick}>
-                          {row[column][DATA]}
-                        </TableCell>
-                      );
+                    fieldIdx++;
+                    if (row[column][F_INST_ID] === props.fieldInstanceID) {
+                      if (row[column][F_IMP] === "TEXTBOX") {
+                        return (
+                          // <TableCell id={idxI + "-" + idxJ} key={idxJ} data-fieldidx={fieldIdx} onClick={props.handleCellClick}>
+                          <TableCell id={row[column][F_INST_ID]} key={idxJ} data-fieldidx={fieldIdx} onClick={props.handleCellClick}>
+                            <Input
+                              className={classes.textFieldSelected}
+                              disableUnderline
+                              value={row[column][DATA]}
+                              style={{ width: "150px" }}
+                              onChange={props.handleFieldChange}
+                              onBlur={props.handleFieldOnBlur}
+                              id={fieldIdx.toString() + "_hp_field"}
+                            />
+                          </TableCell>
+                        );
+                      } else if (row[column][F_IMP] === "SELECT") {
+                        return (
+                          <TableCell>
+                            <Select
+                              key={idxJ}
+                              value={row[column][DATA]}
+                              onChange={props.handleSelect}
+                              onBlur={props.handleFieldOnBlur}
+                              displayEmpty
+                              name="action"
+                            >
+                              {row[column][CONFIG_D].map((selectOption, idx) => {
+                                return (
+                                  <MenuItem key={idx} value={selectOption.value}>
+                                    {selectOption.label}
+                                  </MenuItem>
+                                );
+                              })}
+                            </Select>
+                          </TableCell>
+                        );
+                      }
+                    } else {
+                      if (row[column][F_IMP] === "SELECT") {
+                        return (
+                          // <TableCell id={idxI + "-" + idxJ} key={idxJ} data-fieldidx={fieldIdx} onClick={props.handleCellClick}>
+                          <TableCell id={row[column][F_INST_ID]} key={idxJ} data-fieldidx={fieldIdx} onClick={props.handleCellClick}>
+                            {getLabel(row[column][CONFIG_D], parseInt(row[column][DATA]))}
+                          </TableCell>
+                        );
+                      } else if (row[column][F_IMP] === "TEXTBOX") {
+                        return (
+                          <TableCell id={row[column][F_INST_ID]} key={idxJ} data-fieldidx={fieldIdx} onClick={props.handleCellClick}>
+                            {row[column][DATA]}
+                          </TableCell>
+                        );
+                      }
                     }
                   }
                 })}

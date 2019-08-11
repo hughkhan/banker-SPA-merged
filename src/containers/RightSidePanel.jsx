@@ -54,11 +54,11 @@ class RightSidePanel extends Component {
       <Card>
         <CardHeader
           avatar={
-            <Avatar aria-label="John Bodel">
+            <Avatar aria-label="User">
               <Icon>account_balance</Icon>
             </Avatar>
           }
-          title={"Hello!  I'm " + this.props.userInfo1.banker_name}
+          title={"Hello!  I'm " + this.props.userInfo.banker_name + ", your helpful banker."}
           subheader="Please fill out the following forms"
         />
         <div>
@@ -97,7 +97,7 @@ class RightSidePanel extends Component {
 
 const mapStateToProps = state => {
   return {
-    userInfo1: state.userInfo1
+    userInfo: state.userInfo
   };
 };
 export default withRouter(connect(mapStateToProps)(RightSidePanel));
