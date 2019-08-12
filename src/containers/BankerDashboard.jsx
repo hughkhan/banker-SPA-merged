@@ -53,7 +53,7 @@ class Bootstrap extends Component {
 
   handleCellClick = event => {
     this.props.history.push("/application");
-  }
+  };
 
   componentDidMount() {
     this.props.dispatch({
@@ -71,7 +71,7 @@ class Bootstrap extends Component {
                 color="primary"
                 avatar={
                   <Avatar aria-label="Login">
-                    <Icon>verified_user</Icon>
+                    <Icon>account_circle</Icon>
                   </Avatar>
                 }
                 title="Credit Applicants"
@@ -88,7 +88,7 @@ class Bootstrap extends Component {
                 color="primary"
                 avatar={
                   <Avatar aria-label="Login">
-                    <Icon>verified_user</Icon>
+                    <Icon>account_box</Icon>
                   </Avatar>
                 }
                 title="Customers"
@@ -100,21 +100,25 @@ class Bootstrap extends Component {
             </Card>
           </Grid>
         </Grid>
-        <Card style={{ width: "25%" }}>
-          <CardHeader
-            color="primary"
-            avatar={
-              <Avatar aria-label="Login">
-                <Icon>verified_user</Icon>
-              </Avatar>
-            }
-            title="Appointments"
-            subheader="Can be set by customers"
-          />
-          <CardContent>
-            <Calendar />
-          </CardContent>
-        </Card>
+        <Grid container spacing={5}>
+          <Grid item xs={12} sm={8} md={5} lg={4}>
+            <Card>
+              <CardHeader
+                color="primary"
+                avatar={
+                  <Avatar aria-label="Login">
+                    <Icon>assignment_turned_in</Icon>
+                  </Avatar>
+                }
+                title="Appointments"
+                subheader="Can be set by customers"
+              />
+              <CardContent>
+                <Calendar />
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
       </Container>
     );
   }

@@ -13,7 +13,6 @@ import Select from "@material-ui/core/Select";
 import Icon from "@material-ui/core/Icon";
 import { withRouter } from "react-router-dom";
 
-
 function loadColumns(fieldData) {
   let columns = ["Status-Comm", "Name", "Business", "Product", "ID", "Date"];
   return columns;
@@ -109,7 +108,11 @@ function HPTable(props) {
               <TableRow key={idxI}>
                 {dataColumns.map((column, idxJ) => {
                   if (idxJ === 0) {
-                    return <TableCell onClick={props.handleCellClick}>{getStatus(row[column])}</TableCell>;
+                    return (
+                      <TableCell key={idxJ} onClick={props.handleCellClick}>
+                        {getStatus(row[column])}
+                      </TableCell>
+                    );
                   } else {
                     return <TableCell key={idxJ}>{row[column]}</TableCell>;
                   }
@@ -124,4 +127,3 @@ function HPTable(props) {
 }
 
 export default withRouter(withStyles(styles)(HPTable));
-

@@ -38,7 +38,7 @@ class Chat extends Component {
       text: this.state.commText
     });
 
-    if (this.props.fieldInstanceID === 0){
+    if (this.props.fieldInstanceID === 0) {
       alert("Please select a field first");
       return;
     }
@@ -108,6 +108,12 @@ class Chat extends Component {
   }
 
   render() {
+    let label = "";
+    if (this.props.userInfo.role === "BANKER") {
+      label = "Reply to customer";
+    } else {
+      label = "Ask " + this.props.userInfo.banker_name;
+    }
     return (
       <div style={{ textAlign: "center" }}>
         <Box width={1} height={200} overflow="auto" textAlign="left" maxHeight={200} p={1}>
@@ -124,7 +130,7 @@ class Chat extends Component {
         <Box p={1}>
           <TextField
             id="standard-textarea"
-            label={"Ask " + this.props.userInfo.banker_name}
+            label={label}
             placeholder="Communication"
             multiline
             margin="normal"

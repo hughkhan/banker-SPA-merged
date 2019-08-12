@@ -133,7 +133,9 @@ INSERT INTO field (entity_id, sys_field_type_id, name, config_data) VALUES ((SEL
 INSERT INTO field (entity_id, sys_field_type_id, name, config_data) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), (SELECT id FROM sys_field_type WHERE sys_data_type_id = (SELECT id FROM sys_data_type WHERE system_name = 'Loan_Term')), 'Loan_Term', '[{ "value": 1, "label": "3-month"}, { "value": 2, "label": "6-month"}, { "value": 3, "label": "1-year"}, { "value": 4, "label": "2-year"}]');
 INSERT INTO field (entity_id, sys_field_type_id, name) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), (SELECT id FROM sys_field_type WHERE sys_data_type_id = (SELECT id FROM sys_data_type WHERE system_name = 'Loan_Amount')), 'Loan_Amount');
 
-INSERT INTO field (entity_id, sys_field_type_id, name, config_data) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), (SELECT id FROM sys_field_type WHERE sys_data_type_id = (SELECT id FROM sys_data_type WHERE system_name = 'Security_Type')), 'Security_Type', '[{ "value": 1, "label": "Stock"}, { "value": 2, "label": "Bond"}, { "value": 3, "label": "Annuity"}]');
+INSERT INTO field (entity_id, sys_field_type_id, name, config_data) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), (SELECT id FROM sys_field_type WHERE sys_data_type_id = (SELECT id FROM sys_data_type WHERE system_name = 'Security_Type')), 'Marketable_Security_Type', '[{ "value": 1, "label": "Stock"}, { "value": 2, "label": "Bond"}, { "value": 3, "label": "Unit Investment Trusts"}, { "value": 4, "label": "Mutual/Exchange Traded Funds"}]');
+INSERT INTO field (entity_id, sys_field_type_id, name, config_data) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), (SELECT id FROM sys_field_type WHERE sys_data_type_id = (SELECT id FROM sys_data_type WHERE system_name = 'Security_Type')), 'Non-Marketable_Security_Type', '[{ "value": 1, "label": " Government Series Securities"}, { "value": 2, "label": "Electrification Certificates"}, { "value": 3, "label": "OTC Stocks"}, { "value": 4, "label": "US Savings Bonds"}]');
+INSERT INTO field (entity_id, sys_field_type_id, name, config_data) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), (SELECT id FROM sys_field_type WHERE sys_data_type_id = (SELECT id FROM sys_data_type WHERE system_name = 'Security_Type')), 'Retirement_Account_Type', '[{ "value": 1, "label": "401(k)"}, { "value": 2, "label": "403(b)"}, { "value": 3, "label": "Deferred Compensation Plan"}, { "value": 4, "label": "Pension Plan"}]');
 INSERT INTO field (entity_id, sys_field_type_id, name) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), (SELECT id FROM sys_field_type WHERE sys_data_type_id = (SELECT id FROM sys_data_type WHERE system_name = 'Security_Desc')), 'Security_Desc');
 INSERT INTO field (entity_id, sys_field_type_id, name) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), (SELECT id FROM sys_field_type WHERE sys_data_type_id = (SELECT id FROM sys_data_type WHERE system_name = 'Security_In_Name_Of')), 'Security_In_Name_Of');
 INSERT INTO field (entity_id, sys_field_type_id, name, config_data) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), (SELECT id FROM sys_field_type WHERE sys_data_type_id = (SELECT id FROM sys_data_type WHERE system_name = 'Security_Reg_By_Others')), 'Security_Reg_By_Others', '[{ "value": 1, "label": "Yes"}, { "value": 2, "label": "No"}]');
@@ -239,8 +241,8 @@ AND section.name = 'assets'
 AND parent.name = 'personal_fin_info';			
 
 INSERT INTO section (entity_id, name, type, label) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), 'marketable_sec', 'TABULAR', 'Marketable Securities');			
-INSERT INTO section (entity_id, name, label) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), 'nonmarketable_sec', 'Non-Marketable Securities');
-INSERT INTO section (entity_id, name, label) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), 'retirment_account_', 'Retirement Accounts');
+INSERT INTO section (entity_id, name, type, label) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), 'nonmarketable_sec', 'TABULAR', 'Non-Marketable Securities');
+INSERT INTO section (entity_id, name, type, label) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), 'retirment_accounts', 'TABULAR', 'Retirement Accounts');
 
 
 INSERT INTO template_x_section (entity_id, template_id, section_id, parent_section_id, section_sequence) 
@@ -274,7 +276,7 @@ INNER JOIN section ON entity.id = section.entity_id
 INNER JOIN section parent ON entity.id = parent.entity_id 
 WHERE entity.name = 'Enterprise Bank' 
 AND st.name = 'Retail Store' 
-AND section.name = 'retirment_account_' 
+AND section.name = 'retirment_accounts' 
 AND parent.name = 'assets';	
 
 INSERT INTO section (entity_id, name, label) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), 'liabilities', 'Liabilities');
@@ -605,7 +607,7 @@ INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id
 INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
 WHERE entity.name = 'Enterprise Bank' 
 AND section.name = 'marketable_sec' 
-AND sys_data_type.system_name = 'Security_Type';
+AND field.name = 'Marketable_Security_Type';
 	
 INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
 SELECT entity.id entity_id, section.id section_id, field.id field_id, 2, 1, 'Personal Investments' 
@@ -661,6 +663,212 @@ INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id
 WHERE entity.name = 'Enterprise Bank' 
 AND section.name = 'marketable_sec' 
 AND sys_data_type.system_name = 'Security_Pledged_To_Others';
+
+
+	--nonmarketable_sec
+INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
+SELECT entity.id entity_id, section.id section_id, field.id field_id, 1, 1, '1' 
+FROM entity 
+INNER JOIN section ON entity.id = section.entity_id 
+INNER JOIN field ON entity.id = field.entity_id 
+INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id 
+INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
+WHERE entity.name = 'Enterprise Bank' 
+AND section.name = 'nonmarketable_sec' 
+AND field.name = 'Non-Marketable_Security_Type';
+
+INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
+SELECT entity.id entity_id, section.id section_id, field.id field_id, 2, 1, 'Personal Investments' 
+FROM entity 
+INNER JOIN section ON entity.id = section.entity_id 
+INNER JOIN field ON entity.id = field.entity_id 
+INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id 
+INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
+WHERE entity.name = 'Enterprise Bank' 
+AND section.name = 'nonmarketable_sec' 
+AND sys_data_type.system_name = 'Security_Desc';
+	
+INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
+SELECT entity.id entity_id, section.id section_id, field.id field_id, 3, 1, 'David Thoreau' 
+FROM entity 
+INNER JOIN section ON entity.id = section.entity_id 
+INNER JOIN field ON entity.id = field.entity_id 
+INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id 
+INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
+WHERE entity.name = 'Enterprise Bank' 
+AND section.name = 'nonmarketable_sec' 
+AND sys_data_type.system_name = 'Security_In_Name_Of';
+
+INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
+SELECT entity.id entity_id, section.id section_id, field.id field_id, 4, 1, '2' 
+FROM entity 
+INNER JOIN section ON entity.id = section.entity_id 
+INNER JOIN field ON entity.id = field.entity_id 
+INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id 
+INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
+WHERE entity.name = 'Enterprise Bank' 
+AND section.name = 'nonmarketable_sec' 
+AND sys_data_type.system_name = 'Security_Reg_By_Others';
+
+INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
+SELECT entity.id entity_id, section.id section_id, field.id field_id, 5, 1, '2' 
+FROM entity 
+INNER JOIN section ON entity.id = section.entity_id 
+INNER JOIN field ON entity.id = field.entity_id 
+INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id 
+INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
+WHERE entity.name = 'Enterprise Bank' 
+AND section.name = 'nonmarketable_sec' 
+AND sys_data_type.system_name = 'Security_Held_By_Others';
+
+INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
+SELECT entity.id entity_id, section.id section_id, field.id field_id, 6, 1, '2' 
+FROM entity 
+INNER JOIN section ON entity.id = section.entity_id 
+INNER JOIN field ON entity.id = field.entity_id 
+INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id 
+INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
+WHERE entity.name = 'Enterprise Bank' 
+AND section.name = 'nonmarketable_sec' 
+AND sys_data_type.system_name = 'Security_Pledged_To_Others';
+
+
+INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
+SELECT entity.id entity_id, section.id section_id, field.id field_id, 1, 2, '1' 
+FROM entity 
+INNER JOIN section ON entity.id = section.entity_id 
+INNER JOIN field ON entity.id = field.entity_id 
+INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id 
+INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
+WHERE entity.name = 'Enterprise Bank' 
+AND section.name = 'nonmarketable_sec' 
+AND field.name = 'Non-Marketable_Security_Type';
+	
+INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
+SELECT entity.id entity_id, section.id section_id, field.id field_id, 2, 2, 'Personal Investments' 
+FROM entity 
+INNER JOIN section ON entity.id = section.entity_id 
+INNER JOIN field ON entity.id = field.entity_id 
+INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id 
+INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
+WHERE entity.name = 'Enterprise Bank' 
+AND section.name = 'nonmarketable_sec' 
+AND sys_data_type.system_name = 'Security_Desc';
+	
+INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
+SELECT entity.id entity_id, section.id section_id, field.id field_id, 3, 2, 'David Thoreau' 
+FROM entity 
+INNER JOIN section ON entity.id = section.entity_id 
+INNER JOIN field ON entity.id = field.entity_id 
+INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id 
+INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
+WHERE entity.name = 'Enterprise Bank' 
+AND section.name = 'nonmarketable_sec' 
+AND sys_data_type.system_name = 'Security_In_Name_Of';
+
+INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
+SELECT entity.id entity_id, section.id section_id, field.id field_id, 4, 2, '2' 
+FROM entity 
+INNER JOIN section ON entity.id = section.entity_id 
+INNER JOIN field ON entity.id = field.entity_id 
+INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id 
+INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
+WHERE entity.name = 'Enterprise Bank' 
+AND section.name = 'nonmarketable_sec' 
+AND sys_data_type.system_name = 'Security_Reg_By_Others';
+
+INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
+SELECT entity.id entity_id, section.id section_id, field.id field_id, 5, 2, '2' 
+FROM entity 
+INNER JOIN section ON entity.id = section.entity_id 
+INNER JOIN field ON entity.id = field.entity_id 
+INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id 
+INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
+WHERE entity.name = 'Enterprise Bank' 
+AND section.name = 'nonmarketable_sec' 
+AND sys_data_type.system_name = 'Security_Held_By_Others';
+
+INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
+SELECT entity.id entity_id, section.id section_id, field.id field_id, 6, 2, '2' 
+FROM entity 
+INNER JOIN section ON entity.id = section.entity_id 
+INNER JOIN field ON entity.id = field.entity_id 
+INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id 
+INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
+WHERE entity.name = 'Enterprise Bank' 
+AND section.name = 'nonmarketable_sec' 
+AND sys_data_type.system_name = 'Security_Pledged_To_Others';
+
+
+	--retirment_accounts
+INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
+SELECT entity.id entity_id, section.id section_id, field.id field_id, 1, 1, '1' 
+FROM entity 
+INNER JOIN section ON entity.id = section.entity_id 
+INNER JOIN field ON entity.id = field.entity_id 
+INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id 
+INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
+WHERE entity.name = 'Enterprise Bank' 
+AND section.name = 'retirment_accounts' 
+AND field.name = 'Retirement_Account_Type';
+	
+INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
+SELECT entity.id entity_id, section.id section_id, field.id field_id, 2, 1, 'Personal Investments' 
+FROM entity 
+INNER JOIN section ON entity.id = section.entity_id 
+INNER JOIN field ON entity.id = field.entity_id 
+INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id 
+INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
+WHERE entity.name = 'Enterprise Bank' 
+AND section.name = 'retirment_accounts' 
+AND sys_data_type.system_name = 'Security_Desc';
+	
+INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
+SELECT entity.id entity_id, section.id section_id, field.id field_id, 3, 1, 'David Thoreau' 
+FROM entity 
+INNER JOIN section ON entity.id = section.entity_id 
+INNER JOIN field ON entity.id = field.entity_id 
+INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id 
+INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
+WHERE entity.name = 'Enterprise Bank' 
+AND section.name = 'retirment_accounts' 
+AND sys_data_type.system_name = 'Security_In_Name_Of';
+
+INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
+SELECT entity.id entity_id, section.id section_id, field.id field_id, 4, 1, '2' 
+FROM entity 
+INNER JOIN section ON entity.id = section.entity_id 
+INNER JOIN field ON entity.id = field.entity_id 
+INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id 
+INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
+WHERE entity.name = 'Enterprise Bank' 
+AND section.name = 'retirment_accounts' 
+AND sys_data_type.system_name = 'Security_Reg_By_Others';
+
+INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
+SELECT entity.id entity_id, section.id section_id, field.id field_id, 5, 1, '2' 
+FROM entity 
+INNER JOIN section ON entity.id = section.entity_id 
+INNER JOIN field ON entity.id = field.entity_id 
+INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id 
+INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
+WHERE entity.name = 'Enterprise Bank' 
+AND section.name = 'retirment_accounts' 
+AND sys_data_type.system_name = 'Security_Held_By_Others';
+
+INSERT INTO field_instance (entity_id, section_id, field_id, field_sequence, occur_sequence, data) 
+SELECT entity.id entity_id, section.id section_id, field.id field_id, 6, 1, '2' 
+FROM entity 
+INNER JOIN section ON entity.id = section.entity_id 
+INNER JOIN field ON entity.id = field.entity_id 
+INNER JOIN sys_field_type ON sys_field_type.id = field.sys_field_type_id 
+INNER JOIN sys_data_type ON sys_data_type.id = sys_field_type.sys_data_type_id 
+WHERE entity.name = 'Enterprise Bank' 
+AND section.name = 'retirment_accounts' 
+AND sys_data_type.system_name = 'Security_Pledged_To_Others';
+
+
+
 
 
 
