@@ -6,6 +6,7 @@ import store from "lib/store";
 import Form from "containers/Form";
 import Bootstrap from "containers/Bootstrap";
 import Login from "containers/Login";
+import BankerDashboard from "containers/BankerDashboard";
 
 //const store = createStore(Reducer);
 
@@ -23,7 +24,24 @@ function App() {
       <BrowserRouter>
         <MainLayout>
           <Switch>
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <RequireAuth>
+                  <BankerDashboard />
+                </RequireAuth>
+              )}
+            />
             <Route path="/login" component={Login} />
+            <Route
+              path="/dashboard"
+              render={() => (
+                <RequireAuth>
+                  <BankerDashboard />
+                </RequireAuth>
+              )}
+            />
             <Route
               path="/application"
               render={() => (
@@ -32,7 +50,14 @@ function App() {
                 </RequireAuth>
               )}
             />
-            <Route path="/admin" component={Bootstrap} />
+            <Route
+              path="/admin"
+              render={() => (
+                <RequireAuth>
+                  <Bootstrap />
+                </RequireAuth>
+              )}
+            />
           </Switch>
         </MainLayout>
       </BrowserRouter>

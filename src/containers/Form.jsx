@@ -29,6 +29,7 @@ import * as types from "types/ActionTypes";
 import hpError from "lib/hpError";
 import Typography from "@material-ui/core/Typography";
 
+
 function BorrowersGuide(props) {
   return (
     <Box px={2} maxHeight={300} textAlign="left" overflow="auto">
@@ -361,7 +362,6 @@ class Form extends Component {
                   subheader={this.state.breadCrumbs}
                   style={{ paddingBottom: "40px" }}
                 />
-
                 {this.state.isTabular ? (
                   <HPTable
                     fieldData={this.state.fieldData}

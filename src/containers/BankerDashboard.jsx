@@ -13,6 +13,11 @@ import { withRouter } from "react-router-dom";
 import Box from "@material-ui/core/Box";
 import dbOps from "lib/dbOps";
 import * as types from "types/ActionTypes";
+import CustomerTable from "views/CustomerTable";
+import ProspectTable from "views/ProspectTable";
+import Calendar from "react-calendar";
+//import Calendar from "react-material-ui-calendar";
+//import BigCalendar from "react-big-calendar";
 
 class Bootstrap extends Component {
   constructor() {
@@ -23,6 +28,7 @@ class Bootstrap extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleLogIn = this.handleLogIn.bind(this);
+    this.handleCellClick = this.handleCellClick.bind(this);
   }
 
   handleChange = event => {
@@ -45,18 +51,21 @@ class Bootstrap extends Component {
     this.props.history.push("/application");
   };
 
+  handleCellClick = event => {
+    this.props.history.push("/application");
+  }
+
   componentDidMount() {
     this.props.dispatch({
       type: types.SET_MAIN_TITLE,
-      mainTitle: "Login"
+      mainTitle: "Dashboard"
     });
   }
   render() {
     return (
       <Container maxWidth="xl" component="main">
         <Grid container spacing={5}>
-          <Grid item xs={1} sm={2} md={3} lg={4} />
-          <Grid item xs={10} sm={8} md={6} lg={4}>
+          <Grid item xs={12} sm={12} md={7} lg={8}>
             <Card>
               <CardHeader
                 color="primary"
@@ -65,42 +74,47 @@ class Bootstrap extends Component {
                     <Icon>verified_user</Icon>
                   </Avatar>
                 }
-                title="Hello!"
-                subheader="Please type in your credentials"
+                title="Credit Applicants"
+                // subheader="Please type in your credentials"
               />
               <CardContent>
-                <Box px={2} maxHeight={300} textAlign="left" overflow="auto">
-                  <TextField
-                    id="userid"
-                    label="UserID"
-                    placeholder="userid"
-                    multiline
-                    margin="normal"
-                    variant="outlined"
-                    fullWidth
-                    value={this.state.data}
-                    onChange={this.handleChange}
-                  />
-                  <TextField
-                    id="pwd"
-                    label="Password"
-                    placeholder="pwd"
-                    multiline
-                    margin="normal"
-                    variant="outlined"
-                    fullWidth
-                    value={this.state.data}
-                    onChange={this.handleChange}
-                  />
-                  <Button variant="contained" size="small" color="secondary" onClick={this.handleLogIn}>
-                    &nbsp;&nbsp;Log In&nbsp;&nbsp;
-                  </Button>
-                </Box>
+                <ProspectTable handleCellClick={this.handleCellClick} />
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={1} sm={2} md={3} lg={4} />
+          <Grid item xs={12} sm={12} md={5} lg={4}>
+            <Card>
+              <CardHeader
+                color="primary"
+                avatar={
+                  <Avatar aria-label="Login">
+                    <Icon>verified_user</Icon>
+                  </Avatar>
+                }
+                title="Customers"
+                // subheader="Please type in your credentials"
+              />
+              <CardContent>
+                <CustomerTable />
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
+        <Card style={{ width: "25%" }}>
+          <CardHeader
+            color="primary"
+            avatar={
+              <Avatar aria-label="Login">
+                <Icon>verified_user</Icon>
+              </Avatar>
+            }
+            title="Appointments"
+            subheader="Can be set by customers"
+          />
+          <CardContent>
+            <Calendar />
+          </CardContent>
+        </Card>
       </Container>
     );
   }
