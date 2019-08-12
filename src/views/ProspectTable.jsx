@@ -27,7 +27,7 @@ function loadRows(fieldData) {
   row = { "Status-Comm": [1, 1], Name: "John Chets", Business: "Dewey Pharmacy", Product: "Retail-1", ID: "1101211", Date: "2019-07-07" };
   newRow = cloneDeep(row);
   rows.push(newRow);
-  row = { "Status-Comm": [2, 2], Name: "Brady Gander", Business: "Burney's Que", Product: "Restaurant-3", ID: "1200002", Date: "2019-07-08" };
+  row = { "Status-Comm": [2, 2], Name: "Joe Plumber", Business: "Burney's Que", Product: "Restaurant-3", ID: "1200002", Date: "2019-07-08" };
   newRow = cloneDeep(row);
   rows.push(newRow);
 
@@ -39,7 +39,7 @@ function getStatus(statusArr) {
     //    case [1, 1]:
     return (
       <>
-        <Icon style={{ fontSize: "20px", color: "red" }}>trip_origin</Icon>
+        <Icon style={{ fontSize: "20px", color: "green" }}>trip_origin</Icon>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <Icon style={{ fontSize: "20px", color: "blue" }}>radio_button_unchecked</Icon>
       </>
@@ -63,7 +63,7 @@ function getStatus(statusArr) {
   } else if (statusArr[0] === 2 && statusArr[1] === 2) {
     return (
       <>
-        <Icon style={{ fontSize: "20px", color: "green" }}>trip_origin</Icon>
+        <Icon style={{ fontSize: "20px", color: "orange" }}>trip_origin</Icon>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <Icon style={{ fontSize: "20px", color: "blue" }}>radio_button_checked</Icon>
       </>

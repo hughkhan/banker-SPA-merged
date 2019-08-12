@@ -289,7 +289,7 @@ class Form extends Component {
     try {
       this.props.dispatch({
         type: types.SET_MAIN_TITLE,
-        mainTitle: "Application Form"
+        mainTitle: "Application Form  -  " + this.props.userInfo.user_name
       });
 
       let dbops = new dbOps();
@@ -506,7 +506,8 @@ const mapStateToProps = state => {
     url: state.URL,
     entity_id: state.entity_id,
     template_id: state.template_id,
-    mainTitle: state.mainTitle
+    mainTitle: state.mainTitle,
+    userInfo: state.userInfo,
   };
 };
 
