@@ -58,7 +58,7 @@ class Bootstrap extends Component {
   componentDidMount() {
     this.props.dispatch({
       type: types.SET_MAIN_TITLE,
-      mainTitle: "Dashboard"
+      mainTitle: "Dashboard  -  " + this.props.userInfo.user_name
     });
   }
   render() {
@@ -75,7 +75,6 @@ class Bootstrap extends Component {
                   </Avatar>
                 }
                 title="Credit Applicants"
-                // subheader="Please type in your credentials"
               />
               <CardContent>
                 <ProspectTable handleCellClick={this.handleCellClick} />
