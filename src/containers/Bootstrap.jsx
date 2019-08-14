@@ -67,7 +67,7 @@ class Bootstrap extends Component {
   componentDidMount() {
     this.props.dispatch({
       type: types.SET_MAIN_TITLE,
-      mainTitle: "Admin"
+      mainTitle: "Admin  -  " + this.props.userInfo.user_name
     });
   }
   render() {

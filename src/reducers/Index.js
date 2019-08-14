@@ -15,11 +15,11 @@ const initialState = {
   template_id: 1104,
   mainTitle: "Dashboard",
   //URL: "http://172.16.1.62:3000"
-  // URL: "http://192.168.7.169:3000"
+  URL: "http://192.168.7.169:3000"
   //URL: "localhost:3000"
   //URL: "http://10.10.10.25:3000"
   //URL: "http://192.168.7.142:3000"
-  URL: "http://api.giveplums.com"
+  //URL: "http://api.giveplums.com"
 };
 
 const postReducer = function(state = initialState, action) {
