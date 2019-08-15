@@ -1,6 +1,7 @@
 import hpError from "lib/hpError";
 import $ from "jquery";
 import store from "lib/store";
+import getErrorText from "lib/getErrorText";
 
 export default class dbOps {
   contentType = "application/json";
@@ -21,7 +22,7 @@ export default class dbOps {
       });
       return result;
     } catch (err) {
-      alert("***Reason:*** " + err.responseText + "   Message: Error at " + url + ":  ***Server returned:*** " + result);
+      alert("***Reason:*** " + getErrorText(err.responseText) + "   Message: Error at " + url + ":  ***Server returned:*** " + result);
       throw new hpError("db", errorMsg);
     }
   }
