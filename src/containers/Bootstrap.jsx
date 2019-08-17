@@ -15,6 +15,45 @@ import { withRouter } from "react-router-dom";
 import Box from "@material-ui/core/Box";
 import dbOps from "lib/dbOps";
 import * as types from "types/ActionTypes";
+import Tree from "lib/tree";
+
+async function getSections() {
+  let result = null;
+  let result_json = null;
+  let data = {
+    entity_id: this.props.entity_id,
+    template_id: this.props.template_id
+  };
+
+  let dbops = new dbOps();
+  result = await dbops.getSections(data);
+  result_json = JSON.parse(result);
+
+  if (result_json.length === 0) {
+    alert("No sections defined");
+    return;
+  }
+
+  var tree = new Tree(result_json[0].parent_section_id, {}); //key, data.  0,{} for the root node.
+
+  for (let i = 0; i < result_json.length; i++) {
+    tree.add(result_json[i].section_id, result_json[i], result_json[i].parent_section_id, tree.traversePre); //key, data, toKey, traversal
+  }
+
+  let _formsList = [];
+  tree.traversePre(function(node) {
+    if (typeof node.data.section_label !== "undefined") {
+      _formsList.push({
+        section_id: node.data.section_id,
+        label: node.data.section_label,
+        level: node.data.level,
+        alert: false
+      });
+    }
+  });
+
+  return _formsList;
+}
 
 class Bootstrap extends Component {
   constructor() {
@@ -55,6 +94,15 @@ class Bootstrap extends Component {
             name: this.state.data
           });
           alert(new_template_id);
+          break;
+        case 65:
+          var _formsList = getSections();
+          var _formListStr;
+          for (let i = 0; i < _formsList.length; i++) {
+            _formListStr = _formListStr + _formsList[i];
+          }
+          this.setState({ selected: _formListStr });
+
           break;
         default:
           alert("Error: ID: B-hSIC-1");
@@ -97,6 +145,7 @@ class Bootstrap extends Component {
                   <MenuItem value={40}>Add Template</MenuItem>
                   <MenuItem value={50}>List Templates</MenuItem>
                   <MenuItem value={60}>Select Template</MenuItem>
+                  <MenuItem value={65}>Get Template Sections</MenuItem>
                   <MenuItem value={70}>Add Section</MenuItem>
                   <MenuItem value={80}>List Sections</MenuItem>
                   <MenuItem value={90}>Select Section</MenuItem>
