@@ -17,12 +17,12 @@ import dbOps from "lib/dbOps";
 import * as types from "types/ActionTypes";
 import Tree from "lib/tree";
 
-async function getSections() {
+async function getSections(entity_id, template_id) {
   let result = null;
   let result_json = null;
   let data = {
-    entity_id: this.props.entity_id,
-    template_id: this.props.template_id
+    entity_id: entity_id,
+    template_id: template_id
   };
 
   let dbops = new dbOps();
@@ -96,10 +96,10 @@ class Bootstrap extends Component {
           alert(new_template_id);
           break;
         case 65:
-          var _formsList = getSections();
+          var _formsList = await getSections(this.props.entity_id, this.props.template_id);
           var _formListStr;
           for (let i = 0; i < _formsList.length; i++) {
-            _formListStr = _formListStr + _formsList[i];
+            _formListStr = _formListStr + _formsList[i].label;
           }
           this.setState({ selected: _formListStr });
 
@@ -189,6 +189,7 @@ class Bootstrap extends Component {
 const mapStateToProps = state => {
   return {
     entity_id: state.entity_id,
+    template_id: state.template_id,
     url: state.URL,
     userInfo: state.userInfo,
     mainTitle: state.mainTitle
