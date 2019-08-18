@@ -16,6 +16,9 @@ import Box from "@material-ui/core/Box";
 import dbOps from "lib/dbOps";
 import * as types from "types/ActionTypes";
 import Tree from "lib/tree";
+import FormsNavList from "views/FormsNavList";
+import cloneDeep from "lodash.clonedeep";
+import Stack from "../lib/stack";
 
 async function getSections(entity_id, template_id) {
   let result = null;
@@ -40,19 +43,30 @@ async function getSections(entity_id, template_id) {
     tree.add(result_json[i].section_id, result_json[i], result_json[i].parent_section_id, tree.traversePre); //key, data, toKey, traversal
   }
 
-  let _formsList = [];
+  let _sectionsList = [];
   tree.traversePre(function(node) {
     if (typeof node.data.section_label !== "undefined") {
-      _formsList.push({
+      _sectionsList.push({
         section_id: node.data.section_id,
         label: node.data.section_label,
         level: node.data.level,
-        alert: false
+        parent_section_id: node.data.parent_section_id,
+        child_seq: node.data.child_seq
       });
     }
   });
 
-  return _formsList;
+  return _sectionsList;
+}
+
+function getIndexByAttrib(arrObj, attrib, value) {
+  let idx = arrObj
+    .map(e => {
+      return e[attrib];
+    })
+    .indexOf(value);
+
+  return idx;
 }
 
 class Bootstrap extends Component {
@@ -61,12 +75,18 @@ class Bootstrap extends Component {
     this.state = {
       data: "",
       choice: 0,
-      SelectedItems: ""
+      SelectedItems: "",
+      sectionsList: [],
+      selectedSectionID: 0
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleExecute = this.handleExecute.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleSelectedItemsChange = this.handleSelectedItemsChange.bind(this);
+    this.handleFormClick = this.handleFormClick.bind(this);
+    this.handleInOutDent = this.handleInOutDent.bind(this);
+    this.validateLevels = this.validateLevels.bind(this);
+    this.handleSave = this.handleSave.bind(this);
   }
 
   handleChange = event => {
@@ -96,13 +116,8 @@ class Bootstrap extends Component {
           alert(new_template_id);
           break;
         case 65:
-          var _formsList = await getSections(this.props.entity_id, this.props.template_id);
-          var _formListStr;
-          for (let i = 0; i < _formsList.length; i++) {
-            _formListStr = _formListStr + _formsList[i].label;
-          }
-          this.setState({ selected: _formListStr });
-
+          var _sectionsList = await getSections(this.props.entity_id, this.props.template_id);
+          this.setState({ sectionsList: _sectionsList });
           break;
         default:
           alert("Error: ID: B-hSIC-1");
@@ -110,6 +125,77 @@ class Bootstrap extends Component {
     } catch (err) {
       alert(err.message);
     }
+  }
+
+  handleFormClick(e) {
+    let _section_id = parseInt(e.currentTarget.id);
+    this.setState({ selectedSectionID: _section_id });
+  }
+
+  handleInOutDent(e) {
+    e.stopPropagation();
+
+    let sList = cloneDeep(this.state.sectionsList);
+    let idx = getIndexByAttrib(this.state.sectionsList, "section_id", this.state.selectedSectionID);
+    if (e.currentTarget.id === "outdent") {
+      if (sList[idx].level !== 1) {
+        sList[idx].level--;
+      }
+    } else if (e.currentTarget.id === "indent") {
+      sList[idx].level++;
+    }
+
+    if (!this.validateLevels(sList)) return;
+
+    this.setState({ sectionsList: sList });
+  }
+
+  handleSave(e) {
+    this.serializeTree();
+    
+  }
+
+  validateLevels(sList) {
+    if (sList.length <= 1) return true;
+
+    let curLevel = sList[0].level;
+    let nxtLevel = sList[1].level;
+
+    for (let i = 0; i < sList.length; i++) {
+      if (curLevel < nxtLevel) {
+        if (curLevel + 1 !== nxtLevel) {
+          return false;
+        }
+      }
+      curLevel = sList[i].level;
+      if (i + 1 < sList.length) nxtLevel = sList[i + 1].level;
+    }
+    return true;
+  }
+
+  serializeTree() {
+    let sList = this.state.sectionsList;
+    if (sList.length < 1) return [{}];
+    let ss = [{ section_id: sList[0].section_id, parent_section_id: sList[0].parent_section_id, child_seq: sList[0].child_seq }]; //serialized sections tree
+    if (sList.length === 1) return ss;
+
+    let curLevel = sList[0].level;
+    let nxtLevel = sList[1].level;
+    let currParentID = new Stack();
+
+    currParentID.push(ss[0].parent_section_id); //first section will always have the 'top' root sections as its parent.
+
+    for (let i = 0; i < sList.length; i++) {
+      curLevel = sList[i].level;
+      if (i + 1 < sList.length) nxtLevel = sList[i + 1].level;
+      ss[i] = { section_id: sList[i].section_id, parent_section_id: currParentID.peek(), child_seq: sList[i].child_seq };
+      if (curLevel < nxtLevel) {
+        currParentID.push(ss[i].section_id);
+      } else if (curLevel > nxtLevel) {
+        currParentID.pop();
+      }
+    }
+    return ss;
   }
 
   componentDidMount() {
@@ -177,6 +263,18 @@ class Bootstrap extends Component {
                     onChange={this.handleSelectedItemsChange}
                   />
                 </Box>
+                <FormsNavList formLinks={this.state.sectionsList} handleFormClick={this.handleFormClick} />
+                <box>
+                  <Button id="outdent" variant="contained" size="small" color="secondary" onClick={this.handleInOutDent}>
+                    Outdent
+                  </Button>
+                  <Button id="indent" variant="contained" size="small" color="secondary" onClick={this.handleInOutDent}>
+                    Indent
+                  </Button>
+                </box>
+                <Button id="indent" variant="contained" size="small" color="secondary" onClick={this.handleSave}>
+                  Save
+                </Button>
               </CardContent>
             </Card>
           </Grid>

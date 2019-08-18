@@ -226,7 +226,7 @@ AND parent.name = 'top';
 						
 			
 --insert level 2 section
-INSERT INTO section (entity_id, name, label) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), 'assets', 'Assests');
+INSERT INTO section (entity_id, name, label) VALUES ((SELECT id FROM entity WHERE name = 'Enterprise Bank'), 'assets', 'Assets');
 
 
 INSERT INTO template_x_section (entity_id, template_id, section_id, parent_section_id, section_sequence) 

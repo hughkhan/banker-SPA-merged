@@ -42,7 +42,7 @@ class Login extends Component {
       type: types.SET_USER_INFO,
       userInfo: _userInfo
     });
-    this.props.history.push("/application");
+    this.props.history.push("/");
   };
 
   componentDidMount() {
@@ -92,7 +92,7 @@ class Login extends Component {
                     value={this.state.data}
                     onChange={this.handleChange}
                   />
-                  <Button variant="contained" size="small" color="secondary" onClick={this.handleLogIn}>
+                  <Button variant="contained" size="small" color="secondary" onClick={this.handleLogIn} onKeyPress={this.handleLogInKeyPress}>
                     &nbsp;&nbsp;Log In&nbsp;&nbsp;
                   </Button>
                 </Box>
