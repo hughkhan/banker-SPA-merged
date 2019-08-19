@@ -276,17 +276,21 @@ class Bootstrap extends Component {
                   />
                 </Box>
                 <FormsNavList formLinks={this.state.sectionsList} handleFormClick={this.handleFormClick} />
-                <Box>
+                <Box p={1} component="div" display="inline">
                   <Button id="outdent" variant="contained" size="small" color="secondary" onClick={this.handleInOutDent}>
                     Outdent
                   </Button>
+                </Box>
+                <Box p={1} component="div" display="inline">
                   <Button id="indent" variant="contained" size="small" color="secondary" onClick={this.handleInOutDent}>
                     Indent
                   </Button>
                 </Box>
-                <Button id="indent" variant="contained" size="small" color="secondary" onClick={this.handleSave}>
-                  Save
-                </Button>
+                <Box p={1} component="div" display="inline">
+                  <Button id="indent" variant="contained" size="small" color="secondary" onClick={this.handleSave}>
+                    Save
+                  </Button>
+                </Box>
               </CardContent>
             </Card>
           </Grid>

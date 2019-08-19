@@ -127,7 +127,8 @@ class Chat extends Component {
             } else return null;
           })}
         </Box>
-        <Box p={1}>
+        {/* <div style={{ width: "100%" }}> */}
+        <Box component="div" display="inline">
           <TextField
             id="standard-textarea"
             label={label}
@@ -135,14 +136,16 @@ class Chat extends Component {
             multiline
             margin="normal"
             variant="outlined"
-            fullWidth
             value={this.state.commText}
             onChange={this.handleChange}
           />
+        </Box>
+        <Box component="div" display="inline">
           <Button variant="contained" size="small" color="secondary" onClick={this.handleSubmit}>
             &nbsp;&nbsp;Send&nbsp;&nbsp;
           </Button>
         </Box>
+        {/* </div> */}
       </div>
     );
   }
