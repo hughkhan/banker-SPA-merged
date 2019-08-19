@@ -418,7 +418,6 @@ class Form extends Component {
                     }
                     title="Select Form"
                   />
-
                   <ErrorBoundary>
                     <FormsNavList formLinks={this.state.formsList} handleFormClick={this.handleFormClick} />
                   </ErrorBoundary>

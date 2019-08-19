@@ -54,4 +54,7 @@ export default class dbOps {
   async addFormTemplate(data) {
     return await this.postMessage("/forms/addformtemplate", data, "Could not add the template to the database. " + this.errorMsgAdmin);
   }
+  async updateFormTemplate(data) {
+    return await this.postMessage("/forms/updateformtemplate", data, "Could not update the template to the database. " + this.errorMsgAdmin);
+  }
 }

@@ -27,14 +27,17 @@ async function getSections(entity_id, template_id) {
     entity_id: entity_id,
     template_id: template_id
   };
+  try {
+    let dbops = new dbOps();
+    result = await dbops.getSections(data);
+    result_json = JSON.parse(result);
 
-  let dbops = new dbOps();
-  result = await dbops.getSections(data);
-  result_json = JSON.parse(result);
-
-  if (result_json.length === 0) {
-    alert("No sections defined");
-    return;
+    if (result_json.length === 0) {
+      alert("No sections defined");
+      return;
+    }
+  } catch (err) {
+    alert(err.message);
   }
 
   var tree = new Tree(result_json[0].parent_section_id, {}); //key, data.  0,{} for the root node.
@@ -99,8 +102,8 @@ class Bootstrap extends Component {
     this.setState({ SelectedItems: event.target.value });
   };
   async handleExecute() {
-    var dbops = new dbOps();
     try {
+      var dbops = new dbOps();
       switch (this.state.choice) {
         case 10:
           const new_entity_id = await dbops.addEntity({
@@ -150,9 +153,20 @@ class Bootstrap extends Component {
     this.setState({ sectionsList: sList });
   }
 
-  handleSave(e) {
-    this.serializeTree();
-    
+  async handleSave(e) {
+    let newOrder = this.serializeTree();
+    let result = null;
+    let result_json = null;
+    let dbops = new dbOps();
+    let data = {};
+    try {
+      data.entity_id = this.props.entity_id;
+      data.template_id = this.props.template_id;
+      data.serializedTree = newOrder;
+      result = await dbops.updateFormTemplate(data);
+    } catch (err) {
+      alert(err.message);
+    }
   }
 
   validateLevels(sList) {
@@ -183,7 +197,7 @@ class Bootstrap extends Component {
     let nxtLevel = sList[1].level;
     let currParentID = new Stack();
 
-    currParentID.push(ss[0].parent_section_id); //first section will always have the 'top' root sections as its parent.
+    currParentID.push(ss[0].parent_section_id); //first section in the list will always have the 'top' root sections as its parent.
 
     for (let i = 0; i < sList.length; i++) {
       curLevel = sList[i].level;
