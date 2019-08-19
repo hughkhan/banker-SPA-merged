@@ -22,7 +22,7 @@ export default class dbOps {
       });
       return result;
     } catch (err) {
-      alert("***Reason:*** " + getErrorText(err.responseText) + "   Message: Error at " + url + ":  ***Server returned:*** " + result);
+      alert("***Reason:*** " + getErrorText(err.responseText, err.statusText) + "   Message: Error at " + url + ":  ***Server returned:*** " + result);
       throw new hpError("db", errorMsg);
     }
   }

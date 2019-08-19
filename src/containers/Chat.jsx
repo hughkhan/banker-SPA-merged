@@ -1,6 +1,8 @@
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import Input from "@material-ui/core/Input";
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -116,7 +118,7 @@ class Chat extends Component {
     }
     return (
       <div style={{ textAlign: "center" }}>
-        <Box width={1} height={200} overflow="auto" textAlign="left" maxHeight={200} p={1}>
+        <Box width="100%" height={200} overflow="auto" textAlign="left" maxHeight={200} p={1}>
           {this.state.localCommTextArr.map((row, key) => {
             if (row.length !== 0) {
               return (
@@ -129,13 +131,15 @@ class Chat extends Component {
         </Box>
         {/* <div style={{ width: "100%" }}> */}
         <Box component="div" display="inline">
-          <TextField
+          <Input
             id="standard-textarea"
-            label={label}
-            placeholder="Communication"
+            // label={label}
+            placeholder="Type Here"
+            disableUnderline
             multiline
-            margin="normal"
-            variant="outlined"
+            margin="dense"
+            // variant="outlined"
+            // style={{ width: "100px" }}
             value={this.state.commText}
             onChange={this.handleChange}
           />
