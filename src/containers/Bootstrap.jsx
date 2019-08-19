@@ -155,15 +155,13 @@ class Bootstrap extends Component {
 
   async handleSave(e) {
     let newOrder = this.serializeTree();
-    let result = null;
-    let result_json = null;
     let dbops = new dbOps();
     let data = {};
     try {
       data.entity_id = this.props.entity_id;
       data.template_id = this.props.template_id;
       data.serializedTree = newOrder;
-      result = await dbops.updateFormTemplate(data);
+      await dbops.updateFormTemplate(data);
     } catch (err) {
       alert(err.message);
     }
@@ -278,14 +276,14 @@ class Bootstrap extends Component {
                   />
                 </Box>
                 <FormsNavList formLinks={this.state.sectionsList} handleFormClick={this.handleFormClick} />
-                <box>
+                <Box>
                   <Button id="outdent" variant="contained" size="small" color="secondary" onClick={this.handleInOutDent}>
                     Outdent
                   </Button>
                   <Button id="indent" variant="contained" size="small" color="secondary" onClick={this.handleInOutDent}>
                     Indent
                   </Button>
-                </box>
+                </Box>
                 <Button id="indent" variant="contained" size="small" color="secondary" onClick={this.handleSave}>
                   Save
                 </Button>
