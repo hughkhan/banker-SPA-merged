@@ -64,8 +64,9 @@ class Bootstrap extends Component {
   render() {
     return (
       <Container maxWidth="xl" component="main">
-        <Grid container spacing={5}>
+        <Grid container spacing={5} flex-wrap="nowrap">
           <Grid item xs={12} sm={12} md={7} lg={8}>
+          {/* <Grid item> */}
             <Card>
               <CardHeader
                 color="primary"
@@ -82,6 +83,7 @@ class Bootstrap extends Component {
             </Card>
           </Grid>
           <Grid item xs={12} sm={12} md={5} lg={4}>
+          {/* <Grid item> */}
             <Card>
               <CardHeader
                 color="primary"
@@ -98,9 +100,10 @@ class Bootstrap extends Component {
               </CardContent>
             </Card>
           </Grid>
-        </Grid>
-        <Grid container spacing={5}>
+          {/* </Grid> */}
+          {/* <Grid container spacing={5}> */}
           <Grid item xs={12} sm={8} md={5} lg={4}>
+          {/* <Grid item> */}
             <Card>
               <CardHeader
                 color="primary"
@@ -117,6 +120,7 @@ class Bootstrap extends Component {
               </CardContent>
             </Card>
           </Grid>
+          {/* </Grid> */}
         </Grid>
       </Container>
     );

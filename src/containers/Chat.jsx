@@ -130,7 +130,7 @@ class Chat extends Component {
           })}
         </Box>
         {/* <div style={{ width: "100%" }}> */}
-        <Box display="flex" flexDirection="row" pb={1} mb={1} bgcolor="background.paper">
+        <Box display="flex" flexDirection="row" pb={1} mb={1}>
           <Box flexGrow={4} alignItems="flex-start">
             <Input
               id="standard-textarea"
@@ -141,6 +141,7 @@ class Chat extends Component {
               margin="dense"
               // variant="outlined"
               // style={{ width: "100px" }}
+              style={{ backgroundColor: "WhiteSmoke" }}
               value={this.state.commText}
               onChange={this.handleChange}
             />
