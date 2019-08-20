@@ -2,7 +2,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Input from "@material-ui/core/Input";
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+import OutlinedInput from "@material-ui/core/OutlinedInput";
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -130,24 +130,26 @@ class Chat extends Component {
           })}
         </Box>
         {/* <div style={{ width: "100%" }}> */}
-        <Box component="div" display="inline">
-          <Input
-            id="standard-textarea"
-            // label={label}
-            placeholder="Type Here"
-            disableUnderline
-            multiline
-            margin="dense"
-            // variant="outlined"
-            // style={{ width: "100px" }}
-            value={this.state.commText}
-            onChange={this.handleChange}
-          />
-        </Box>
-        <Box component="div" display="inline">
-          <Button variant="contained" size="small" color="secondary" onClick={this.handleSubmit}>
-            &nbsp;&nbsp;Send&nbsp;&nbsp;
-          </Button>
+        <Box display="flex" flexDirection="row" pb={1} mb={1} bgcolor="background.paper">
+          <Box flexGrow={4} alignItems="flex-start">
+            <Input
+              id="standard-textarea"
+              // label={label}
+              placeholder="Type Here"
+              disableUnderline
+              multiline
+              margin="dense"
+              // variant="outlined"
+              // style={{ width: "100px" }}
+              value={this.state.commText}
+              onChange={this.handleChange}
+            />
+          </Box>
+          <Box flexGrow={1} alignItems="flex-end">
+            <Button variant="contained" size="small" color="secondary" onClick={this.handleSubmit}>
+              &nbsp;&nbsp;Send&nbsp;&nbsp;
+            </Button>
+          </Box>
         </Box>
         {/* </div> */}
       </div>
