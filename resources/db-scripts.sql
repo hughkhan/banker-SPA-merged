@@ -175,6 +175,63 @@ SELECT name, text, submit_date
 
 
 
+UPDATE template_x_section  
+SET entity_id = 1033,
+	template_id = 1104,
+	section_id = 1106,
+	parent_section_id = 1105,
+	section_sequence = 1 
+WHERE 
+	entity_id = 1033 
+AND 
+	template_id = 1104;
+
+
+UPDATE template_x_section  
+SET parent_section_id = 1105,
+	section_sequence = 1 
+WHERE entity_id = 1033 
+AND template_id = 1104
+AND section_id = 1106;
+
+
+--generated
+
+UPDATE template_x_section SET parent_section_id = 1103, section_sequence = 1 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1105; 
+UPDATE template_x_section SET parent_section_id = 1103, section_sequence = 1 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1106; 
+UPDATE template_x_section SET parent_section_id = 1103, section_sequence = 3 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1107; 
+UPDATE template_x_section SET parent_section_id = 1103, section_sequence = 4 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1108; 
+UPDATE template_x_section SET parent_section_id = 1108, section_sequence = 1 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1109; 
+UPDATE template_x_section SET parent_section_id = 1109, section_sequence = 1 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1110; 
+UPDATE template_x_section SET parent_section_id = 1109, section_sequence = 2 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1111; 
+UPDATE template_x_section SET parent_section_id = 1109, section_sequence = 3 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1112; 
+UPDATE template_x_section SET parent_section_id = 1108, section_sequence = 2 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1113; 
+UPDATE template_x_section SET parent_section_id = 1113, section_sequence = 1 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1114; 
+UPDATE template_x_section SET parent_section_id = 1108, section_sequence = 3 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1115; 
+UPDATE template_x_section SET parent_section_id = 1108, section_sequence = 4 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1116; 
+UPDATE template_x_section SET parent_section_id = 1103, section_sequence = 5 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1117; 
+UPDATE template_x_section SET parent_section_id = 1117, section_sequence = 1 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1118;
+---
+UPDATE template_x_section 
+SET parent_section_id = 1103, 
+section_sequence = 1 
+WHERE entity_id = 1033 
+AND template_id = 1104 
+AND section_id = 1103; 
+
+UPDATE template_x_section SET parent_section_id = 1103, section_sequence = 1 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1103; UPDATE template_x_section SET parent_section_id = 1103, section_sequence = 3 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1103; 
+
+UPDATE template_x_section 
+SET parent_section_id = 1103, 
+section_sequence = 4 
+WHERE entity_id = 1033 
+AND template_id = 1104 
+AND section_id = 1103; 
+
+UPDATE template_x_section SET parent_section_id = 1108, section_sequence = 1 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1108; UPDATE template_x_section SET parent_section_id = 1109, section_sequence = 1 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1109; UPDATE template_x_section SET parent_section_id = 1109, section_sequence = 2 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1109; UPDATE template_x_section SET parent_section_id = 1109, section_sequence = 3 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1109; UPDATE template_x_section SET parent_section_id = 1108, section_sequence = 2 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1108; UPDATE template_x_section SET parent_section_id = 1113, section_sequence = 1 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1113; UPDATE template_x_section SET parent_section_id = 1108, section_sequence = 3 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1108; UPDATE template_x_section SET parent_section_id = 1108, section_sequence = 4 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1108; UPDATE template_x_section SET parent_section_id = 1103, section_sequence = 5 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1103; UPDATE template_x_section SET parent_section_id = 1117, section_sequence = 1 WHERE entity_id = 1033 AND template_id = 1104 AND section_id = 1117;
+
+
+
 curl -d "{\"entity_id\":1026, \"section_id\":1067}" -H "Content-Type: application/json" -X POST http://192.168.7.142:3000/forms/getfields
 --should work but doesn't
 --curl -d '{"entity_id":1026, "section_id":1067}' -H "Content-Type: application/json" -X POST http://192.168.7.142:3000/forms/getfields

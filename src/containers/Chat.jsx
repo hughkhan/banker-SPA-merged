@@ -10,10 +10,31 @@ import { withRouter } from "react-router-dom";
 import Box from "@material-ui/core/Box";
 import $ from "jquery";
 import dbOps from "lib/dbOps";
+import { red } from "@material-ui/core/colors";
 
-const styles = {
-  root: {}
-};
+// const styles = {
+//   root: {}
+// };
+
+const styles = theme => ({
+  root: {
+    padding: theme.spacing(1),
+    [theme.breakpoints.down("sm")]: {
+      // backgroundColor: theme.palette.secondary.main,
+      width: "100px"
+    },
+    [theme.breakpoints.up("md")]: {
+      // backgroundColor: theme.palette.primary.main,
+      width: "200px"
+    },
+    [theme.breakpoints.up("lg")]: {
+      width: "300px"
+    }
+  },
+  input: {
+    color: red[500]
+  }
+});
 
 class Chat extends Component {
   constructor(props) {
@@ -111,6 +132,7 @@ class Chat extends Component {
 
   render() {
     let label = "";
+    const { classes } = this.props;
     if (this.props.userInfo.role === "BANKER") {
       label = "Reply to customer";
     } else {
@@ -133,6 +155,7 @@ class Chat extends Component {
         <Box display="flex" flexDirection="row" pb={1} mb={1}>
           <Box flexGrow={4} alignItems="flex-start">
             <Input
+              className={classes.input}
               id="standard-textarea"
               // label={label}
               placeholder="Type Here"

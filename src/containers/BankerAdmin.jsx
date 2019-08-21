@@ -1,3 +1,4 @@
+import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
@@ -14,7 +15,22 @@ import Box from "@material-ui/core/Box";
 import dbOps from "lib/dbOps";
 import * as types from "types/ActionTypes";
 
-class Login extends Component {
+const styles = theme => ({
+  root: {
+    padding: theme.spacing(1),
+    [theme.breakpoints.down("sm")]: {
+      width: "100px"
+    },
+    [theme.breakpoints.up("md")]: {
+      width: "200px"
+    },
+    [theme.breakpoints.up("lg")]: {
+      width: "300px"
+    }
+  }
+});
+
+class BankerAdmin extends Component {
   constructor() {
     super();
     this.state = {
@@ -22,7 +38,6 @@ class Login extends Component {
       pwd: ""
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleLogIn = this.handleLogIn.bind(this);
   }
 
   handleChange = event => {
@@ -30,76 +45,61 @@ class Login extends Component {
     else if (event.target.id === "pwd") this.setState({ pwd: event.target.value });
   };
 
-  handleLogIn = event => {
-    let _userInfo = this.props.userInfo;
-    _userInfo.user_name = this.state.userId;
-
-    if (this.state.userId.toUpperCase() === "JANE") _userInfo.role = "BANKER";
-    else _userInfo.role = "CUSTOMER";
-    _userInfo.loggedIn = true;
-
-    this.props.dispatch({
-      type: types.SET_USER_INFO,
-      userInfo: _userInfo
-    });
-    this.props.history.push("/");
-  };
-
   componentDidMount() {
     this.props.dispatch({
       type: types.SET_MAIN_TITLE,
-      mainTitle: "Login"
+      mainTitle: "Banker Admin"
     });
   }
   render() {
     return (
       <Container maxWidth="xl" component="main">
         <Grid container spacing={5}>
-          <Grid item xs={1} sm={2} md={3} lg={4} />
-          <Grid item xs={10} sm={8} md={6} lg={4}>
+          <Grid item xs={1} sm={2} md={2} lg={2} />
+          <Grid item xs={10} sm={8} md={8} lg={8}>
             <Card>
               <CardHeader
                 color="primary"
                 avatar={
-                  <Avatar aria-label="Login">
-                    <Icon>verified_user</Icon>
+                  <Avatar aria-label="Banker Admin">
+                    <Icon>account_balance</Icon>
                   </Avatar>
                 }
-                title="Hello!"
-                subheader="Please type in your credentials"
+                title="Banker Admin"
+                subheader="You have full control of this app"
               />
               <CardContent>
                 <Box px={2} maxHeight={300} textAlign="left" overflow="auto">
                   <TextField
-                    id="userid"
-                    label="UserID"
-                    placeholder="userid"
+                    id="templates"
+                    label="Templates"
+                    placeholder="Templates"
                     multiline
                     margin="normal"
                     variant="outlined"
                     fullWidth
-                    value={this.state.userId}
+                    value={this.state.data}
                     onChange={this.handleChange}
                   />
                   <TextField
-                    id="pwd"
-                    label="Password"
-                    placeholder="pwd"
+                    id="sections"
+                    label="sections"
+                    placeholder="sections"
                     multiline
                     margin="normal"
                     variant="outlined"
                     fullWidth
-                    value={this.state.pwd}
+                    value={this.state.data}
                     onChange={this.handleChange}
                   />
-                  <Button variant="contained" size="small" color="secondary" onClick={this.handleLogIn} onKeyPress={this.handleLogInKeyPress}>
-                    &nbsp;&nbsp;Log In&nbsp;&nbsp;
+                  <Button variant="contained" size="small" color="secondary">
+                    &nbsp;&nbsp;Add&nbsp;&nbsp;
                   </Button>
                 </Box>
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={1} sm={2} md={3} lg={4} />
+          <Grid item xs={1} sm={2} md={2} lg={2} />
         </Grid>
       </Container>
     );
@@ -114,4 +114,5 @@ const mapStateToProps = state => {
     mainTitle: state.mainTitle
   };
 };
-export default withRouter(connect(mapStateToProps)(Login));
+
+export default withRouter(connect(mapStateToProps)(withStyles(styles)(BankerAdmin)));

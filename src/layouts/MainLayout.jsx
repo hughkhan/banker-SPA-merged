@@ -101,15 +101,18 @@ class MainLayout extends React.Component {
         this.props.history.push("/admin");
         break;
       case "4":
-        this.props.history.push("/tutorial");
+        this.props.history.push("/bankeradmin");
         break;
       case "5":
-        this.props.history.push("/personanalysis");
+        this.props.history.push("/tutorial");
         break;
       case "6":
-        this.props.history.push("/analysis");
+        this.props.history.push("/personanalysis");
         break;
       case "7":
+        this.props.history.push("/analysis");
+        break;
+      case "8":
         this.props.history.push("/feedback");
         break;
 
@@ -136,10 +139,15 @@ class MainLayout extends React.Component {
       {
         id: "3",
         img: "assets/images/settings.png",
-        text: "Admin"
+        text: "Super Admin"
       },
       {
         id: "4",
+        img: "assets/images/settings.png",
+        text: "Banker Admin"
+      },
+      {
+        id: "5",
         img: "assets/images/account-question-outline.png",
         text: "Tutorial"
       }

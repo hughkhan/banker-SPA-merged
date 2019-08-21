@@ -7,6 +7,7 @@ import Form from "containers/Form";
 import Bootstrap from "containers/Bootstrap";
 import Login from "containers/Login";
 import BankerDashboard from "containers/BankerDashboard";
+import BankerAdmin from "containers/BankerAdmin";
 
 //const store = createStore(Reducer);
 
@@ -55,6 +56,14 @@ function App() {
               render={() => (
                 <RequireAuth>
                   <Bootstrap />
+                </RequireAuth>
+              )}
+            />
+            <Route
+              path="/bankeradmin"
+              render={() => (
+                <RequireAuth>
+                  <BankerAdmin />
                 </RequireAuth>
               )}
             />

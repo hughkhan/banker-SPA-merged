@@ -54,7 +54,7 @@ class RightSidePanel extends Component {
       <Card>
         <CardHeader
           avatar={
-            <Avatar aria-label="User">
+            <Avatar aria-label="Banker">
               <Icon>account_balance</Icon>
             </Avatar>
           }

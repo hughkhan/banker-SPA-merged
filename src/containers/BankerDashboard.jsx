@@ -19,7 +19,7 @@ import Calendar from "react-calendar";
 //import Calendar from "react-material-ui-calendar";
 //import BigCalendar from "react-big-calendar";
 
-class Bootstrap extends Component {
+class BankerDashboard extends Component {
   constructor() {
     super();
     this.state = {
@@ -64,9 +64,9 @@ class Bootstrap extends Component {
   render() {
     return (
       <Container maxWidth="xl" component="main">
-        <Grid container spacing={5} flex-wrap="nowrap">
+        <Grid container spacing={5} flex-wrap="wrap">
           <Grid item xs={12} sm={12} md={7} lg={8}>
-          {/* <Grid item> */}
+            {/* <Grid item> */}
             <Card>
               <CardHeader
                 color="primary"
@@ -83,7 +83,7 @@ class Bootstrap extends Component {
             </Card>
           </Grid>
           <Grid item xs={12} sm={12} md={5} lg={4}>
-          {/* <Grid item> */}
+            {/* <Grid item> */}
             <Card>
               <CardHeader
                 color="primary"
@@ -103,7 +103,7 @@ class Bootstrap extends Component {
           {/* </Grid> */}
           {/* <Grid container spacing={5}> */}
           <Grid item xs={12} sm={8} md={5} lg={4}>
-          {/* <Grid item> */}
+            {/* <Grid item> */}
             <Card>
               <CardHeader
                 color="primary"
@@ -135,4 +135,4 @@ const mapStateToProps = state => {
     mainTitle: state.mainTitle
   };
 };
-export default withRouter(connect(mapStateToProps)(Bootstrap));
+export default withRouter(connect(mapStateToProps)(BankerDashboard));
