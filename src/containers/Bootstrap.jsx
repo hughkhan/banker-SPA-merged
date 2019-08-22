@@ -19,6 +19,8 @@ import Tree from "lib/tree";
 import FormsNavList from "views/FormsNavList";
 import cloneDeep from "lodash.clonedeep";
 import Stack from "../lib/stack";
+import IconButton from "@material-ui/core/IconButton";
+// import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 async function getSections(entity_id, template_id) {
   let result = null;
@@ -87,7 +89,7 @@ class Bootstrap extends Component {
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleSelectedItemsChange = this.handleSelectedItemsChange.bind(this);
     this.handleFormClick = this.handleFormClick.bind(this);
-    this.handleInOutDent = this.handleInOutDent.bind(this);
+    this.handleSectionMove = this.handleSectionMove.bind(this);
     this.validateLevels = this.validateLevels.bind(this);
     this.handleSave = this.handleSave.bind(this);
   }
@@ -135,7 +137,7 @@ class Bootstrap extends Component {
     this.setState({ selectedSectionID: _section_id });
   }
 
-  handleInOutDent(e) {
+  handleSectionMove(e) {
     e.stopPropagation();
 
     let sList = cloneDeep(this.state.sectionsList);
@@ -146,6 +148,20 @@ class Bootstrap extends Component {
       }
     } else if (e.currentTarget.id === "indent") {
       sList[idx].level++;
+    } else if (e.currentTarget.id === "up") {
+      if (idx !== 0) {
+        let temp = cloneDeep(sList[idx]);
+        sList[idx].section_id = sList[idx - 1].section_id;
+        sList[idx].label = sList[idx - 1].label;
+        sList[idx - 1].section_id = temp.section_id;
+        sList[idx - 1].label = temp.label;
+      } else return;
+    } else if (e.currentTarget.id === "down") {
+      if (idx < sList.length) {
+        let temp = sList[idx];
+        sList[idx] = sList[idx + 1];
+        sList[idx + 1] = temp;
+      } else return;
     }
 
     if (!this.validateLevels(sList)) return;
@@ -277,17 +293,22 @@ class Bootstrap extends Component {
                 </Box>
                 <FormsNavList formLinks={this.state.sectionsList} handleFormClick={this.handleFormClick} />
                 <Box p={1} component="div" display="inline">
-                  <Button id="outdent" variant="contained" size="small" color="secondary" onClick={this.handleInOutDent}>
-                    Outdent
-                  </Button>
+                  <IconButton id="outdent" aria-label="arrow_back" size="small" color="secondary" onClick={this.handleSectionMove}>
+                    <Icon style={{ fontSize: "40px", color: "rgba(0, 0, 0, 0.3)" }}>arrow_back</Icon>
+                  </IconButton>
+                  <IconButton id="up" aria-label="arrow_back" size="small" color="secondary" onClick={this.handleSectionMove}>
+                    <Icon style={{ fontSize: "40px", color: "rgba(0, 0, 0, 0.3)" }}>arrow_upward</Icon>
+                  </IconButton>
+                  <IconButton id="down" aria-label="arrow_back" size="small" color="secondary" onClick={this.handleSectionMove}>
+                    <Icon style={{ fontSize: "40px", color: "rgba(0, 0, 0, 0.3)" }}>arrow_downward</Icon>
+                  </IconButton>
+                  <IconButton id="indent" aria-label="arrow_back" size="small" color="secondary" onClick={this.handleSectionMove}>
+                    <Icon style={{ fontSize: "40px", color: "rgba(0, 0, 0, 0.3)" }}>arrow_forward</Icon>
+                    {/* <ArrowDropDownIcon style={{ fontSize: "70px", color: "rgba(0, 0, 0, 0.7)" }} /> */}
+                  </IconButton>
                 </Box>
                 <Box p={1} component="div" display="inline">
-                  <Button id="indent" variant="contained" size="small" color="secondary" onClick={this.handleInOutDent}>
-                    Indent
-                  </Button>
-                </Box>
-                <Box p={1} component="div" display="inline">
-                  <Button id="indent" variant="contained" size="small" color="secondary" onClick={this.handleSave}>
+                  <Button id="save" variant="contained" size="small" color="secondary" onClick={this.handleSave}>
                     Save
                   </Button>
                 </Box>
