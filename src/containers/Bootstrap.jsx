@@ -147,7 +147,8 @@ class Bootstrap extends Component {
         sList[idx].level--;
       }
     } else if (e.currentTarget.id === "indent") {
-      sList[idx].level++;
+      if (idx !== 0) sList[idx].level++;
+      else return;
     } else if (e.currentTarget.id === "up") {
       if (idx !== 0) {
         let temp = cloneDeep(sList[idx]);
@@ -158,9 +159,11 @@ class Bootstrap extends Component {
       } else return;
     } else if (e.currentTarget.id === "down") {
       if (idx < sList.length) {
-        let temp = sList[idx];
-        sList[idx] = sList[idx + 1];
-        sList[idx + 1] = temp;
+        let temp = cloneDeep(sList[idx]);
+        sList[idx].section_id = sList[idx + 1].section_id;
+        sList[idx].label = sList[idx + 1].label;
+        sList[idx + 1].section_id = temp.section_id;
+        sList[idx + 1].label = temp.label;
       } else return;
     }
 
@@ -292,7 +295,7 @@ class Bootstrap extends Component {
                   />
                 </Box>
                 <FormsNavList formLinks={this.state.sectionsList} handleFormClick={this.handleFormClick} />
-                <Box p={1} component="div" display="inline">
+                <Box p={1} display="flex">
                   <IconButton id="outdent" aria-label="arrow_back" size="small" color="secondary" onClick={this.handleSectionMove}>
                     <Icon style={{ fontSize: "40px", color: "rgba(0, 0, 0, 0.3)" }}>arrow_back</Icon>
                   </IconButton>
